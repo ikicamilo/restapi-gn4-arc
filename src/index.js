@@ -8,6 +8,8 @@ const bodyParser = require('body-parser');
 //settings
 app.set('port', process.env.PORT || 3000);
 app.set('json spaces', 2);
+app.set('environment', process.argv[2] === 'sandbox' ? process.env.endpointSandbox : process.env.endpointProduction);
+app.set('bearer', process.argv[2] === 'sandbox' ? process.env.bearerSandbox : process.env.bearerProduction);
 
 //middlewares
 app.use(morgan('dev'));
@@ -31,6 +33,8 @@ app.use('/', require('./routes/root'));
 //starting the server
 app.listen(app.get('port'), () => {
     console.log(`Server on port ${app.get('port')}`);
+    console.log(`Environment ${app.get('environment')}`);
+    console.log(`Bearer ${app.get('bearer')}`);    
 });
 
 

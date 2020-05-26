@@ -9,6 +9,8 @@ const ensureToken = require('../controllers/ensureToken');
 const path = require('path');
 
 router.post('/', ensureToken, (req, res) => { 
+    const environment = req.app.get('environment');
+    const bearer = req.app.get('bearer');
     const avaibleExtensions = ['.jpeg', '.jpg', '.png'];
     const form = new multiparty.Form();
     form.parse(req, async function(err, fields, files) {
@@ -18,8 +20,8 @@ router.post('/', ensureToken, (req, res) => {
             if (avaibleExtensions.includes(path.extname(files.image[0].originalFilename))){
                 const arcRequest = {
                     method: 'POST',
-                    url: `https://api.sandbox.elespectador.arcpublishing.com/photo/api/v2/photos`,
-                    auth: {bearer: 'R00FLRMTJ7OC78G13494UDJ85TJ51JSHIcjQk6x5vMDSvphCh9IpqVeBKf+YsjaMHHR9yPrb'},
+                    url: `${environment}/photo/api/v2/photos`,
+                    auth: {bearer: `${bearer}`},
                     formData: {
                         file: {
                             value: fs.createReadStream(files.image[0].path),

@@ -1,0 +1,29 @@
+{
+    "sections":[
+        { "gn4Section":"Alto Turmequé","arcSection":"/noticias/alto-turmeque"},
+        { "gn4Section":"Bogotá","arcSection":"/noticias/bogota"},
+        { "gn4Section":"Ciencia","arcSection":"/noticias/ciencia"},
+        { "gn4Section":"Cine","arcSection":"/entretenimiento/cine"},
+        { "gn4Section":"Cultura","arcSection":"/noticias/cultura"},
+        { "gn4Section":"Deportes","arcSection":"/deportes"},
+        { "gn4Section":"Editorial","arcSection":"/opinion/editorial"},
+        { "gn4Section":"Educación","arcSection":"/noticias/educacion"},
+        { "gn4Section":"Especiales","arcSection":"/especiales"},
+        { "gn4Section":"Gastronomía","arcSection":"/cromos/gastronomía"},
+        { "gn4Section":"Gente","arcSection":"/entretenimiento/gente"},
+        { "gn4Section":"Horóscopo","arcSection":"/entretenimiento/horoscopo"},
+        { "gn4Section":"Internacional","arcSection":"/noticias/el-mundo"},
+        { "gn4Section":"Investigación","arcSection":"/noticias/investigacion"},
+        { "gn4Section":"Judicial","arcSection":"/noticias/judicial"},
+        { "gn4Section":"Medio Ambiente","arcSection":"/noticias/medio-ambiente"},
+        { "gn4Section":"Mi Bebé","arcSection":"/cromos/maternidad-y-bienestar"},
+        { "gn4Section":"Mundo destinos","arcSection":"/noticias/mundo-destinos"},
+        { "gn4Section":"Música","arcSection":"/entrenimiento/musica"},
+        { "gn4Section":"Nacional","arcSection":"/noticias/nacional"},
+        { "gn4Section":"Opinión","arcSection":"/opinion"},
+        { "gn4Section":"Política","arcSection":"/noticias/politica"},
+        { "gn4Section":"Salud","arcSection":"/noticias/salud"},
+        { "gn4Section":"Tecnología","arcSection":"/noticias/tecnologia"},
+        { "gn4Section":"Un chat con…","arcSection":"/noticias/un-chat-con"}
+    ]
+}
