@@ -11,23 +11,23 @@ const ensureToken = require('../controllers/ensureToken');
 router.post('/', ensureToken, async (req, res) => { 
     const environment = req.app.get('environment');
     const bearer = req.app.get('bearer');
-    let arcfile = require('../templates/gn4-arc');
+    let arcfile3 = require('../templates/gn4-arc-3');
     const gn4file = req.body;
     const { title, body, field_usuario_gn4_id, field_gn4_id, field_fecha_publi_text, field_tags, type, field_teaser, field_section_text} = gn4file; 
     
     if (title && body && field_fecha_publi_text && field_gn4_id && type){
         /*Campos requeridos de ARC*/
         if (type == 'column'){
-            arcfile.headlines.basic = title;
-            arcfile.headlines.meta_title = title;      
-            arcfile.content_elements[0].content = body.und[0].value; 
-            arcfile.description.basic = field_teaser.und[0].value;                       
-            arcfile.first_publish_date = field_fecha_publi_text.und[0].value;            
-            arcfile.source.source_id = field_gn4_id.und[0].value;
-            arcfile.additional_properties.publish_date = field_fecha_publi_text.und[0].value;           
-            arcfile.subtype = type;
+            arcfile3.headlines.basic = title;
+            arcfile3.headlines.meta_title = title;      
+            arcfile3.content_elements[0].content = body.und[0].value; 
+            arcfile3.description.basic = field_teaser.und[0].value;                       
+            arcfile3.first_publish_date = field_fecha_publi_text.und[0].value;            
+            arcfile3.source.source_id = field_gn4_id.und[0].value;
+            arcfile3.additional_properties.publish_date = field_fecha_publi_text.und[0].value;           
+            arcfile3.subtype = type;
             //tags
-            if (field_tags){            
+            if (field_tags){                            
                 const gn4Tags = field_tags.und[0].value.split(",");
                 const arcTags = [];
                 for (let i = 0; i < gn4Tags.length; i++) {
@@ -37,8 +37,8 @@ router.post('/', ensureToken, async (req, res) => {
                     });   
                 }
 
-                arcfile.taxonomy.tags = arcTags;
-                arcfile.taxonomy.seo_keywords = gn4Tags;            
+                arcfile3.taxonomy.tags = arcTags;
+                arcfile3.taxonomy.seo_keywords = gn4Tags;            
             }
             
             //sections
@@ -47,11 +47,11 @@ router.post('/', ensureToken, async (req, res) => {
                 const sectionDrupal = drupalSectionStructure[1];
                 for (let i = 0; i < sectionsFile.sections.length; i++) {                    
                     if(sectionsFile.sections[i].gn4Section == sectionDrupal){                        
-                        arcfile.taxonomy.sites[0].referent.id = sectionsFile.sections[i].arcSection;
-                        arcfile.taxonomy.sections[0].referent.id = sectionsFile.sections[i].arcSection;
-                        arcfile.taxonomy.primary_section.referent.id = sectionsFile.sections[i].arcSection;
-                        arcfile.taxonomy.primary_site.referent.id = sectionsFile.sections[i].arcSection;
-                        arcfile.websites = {
+                        arcfile3.taxonomy.sites[0].referent.id = sectionsFile.sections[i].arcSection;
+                        arcfile3.taxonomy.sections[0].referent.id = sectionsFile.sections[i].arcSection;
+                        arcfile3.taxonomy.primary_section.referent.id = sectionsFile.sections[i].arcSection;
+                        arcfile3.taxonomy.primary_site.referent.id = sectionsFile.sections[i].arcSection;
+                        arcfile3.websites = {
                             "el-espectador": {
                                 "website_section": {
                                     "type": "reference",
@@ -65,35 +65,34 @@ router.post('/', ensureToken, async (req, res) => {
                         }
                         break;                       
                     }else{
-                        arcfile.taxonomy.sites[0].referent.id = "";
-                        arcfile.taxonomy.sections[0].referent.id = "";
-                        arcfile.taxonomy.primary_section.referent.id = "";
-                        arcfile.taxonomy.primary_site.referent.id = ""; 
-                        arcfile.websites = {}
+                        arcfile3.taxonomy.sites[0].referent.id = "";
+                        arcfile3.taxonomy.sections[0].referent.id = "";
+                        arcfile3.taxonomy.primary_section.referent.id = "";
+                        arcfile3.taxonomy.primary_site.referent.id = ""; 
+                        arcfile3.websites = {}
                     }
                 }                
             }else{
-                arcfile.taxonomy.sites[0].referent.id = "";
-                arcfile.taxonomy.sections[0].referent.id = "";
-                arcfile.taxonomy.primary_section.referent.id = "";
-                arcfile.taxonomy.primary_site.referent.id = ""; 
-                arcfile.websites = {}
+                arcfile3.taxonomy.sites[0].referent.id = "";
+                arcfile3.taxonomy.sections[0].referent.id = "";
+                arcfile3.taxonomy.primary_section.referent.id = "";
+                arcfile3.taxonomy.primary_site.referent.id = ""; 
+                arcfile3.websites = {}
             }
             
-            const arcRequest = {
+            const arcRequest3 = {
                 method: 'POST',
                 uri: `${environment}/story/v2/story`,
                 auth: {bearer: `${bearer}`},
-                body: JSON.stringify(arcfile)
+                body: JSON.stringify(arcfile3)
             };
             
-            const resultRequest = await request(arcRequest);
-            const jsonResultRequest = JSON.parse(resultRequest);                        
-            res.send(jsonResultRequest._id);
-            arcfile.content_elements= [{
-                "type": "text",
-                "content": ""
-            }];
+            const resultRequest3 = await request(arcRequest3);
+            const jsonResultRequest3 = JSON.parse(resultRequest3);                        
+            res.send(jsonResultRequest3._id);
+            arcfile3.promo_items={}; 
+            arcfile3.taxonomy.tags = [];
+            arcfile3.taxonomy.seo_keywords = [];             
         }else{
             return res.status(404).send('This content is not a column');
         }
@@ -107,7 +106,7 @@ router.post('/', ensureToken, async (req, res) => {
 router.put('/:id', ensureToken, async (req, res) => {
     const environment = req.app.get('environment');
     const bearer = req.app.get('bearer');
-    let arcfile2 = require('../templates/gn4-arc-2');
+    let arcfile4 = require('../templates/gn4-arc-4');
     // Peticion
     const arcRequestGetStory = {
         method: 'GET',
@@ -137,18 +136,18 @@ router.put('/:id', ensureToken, async (req, res) => {
     if (title && body && field_fecha_publi_text && field_gn4_id && type){
         /*Campos requeridos de ARC*/
         if (type == 'column'){
-            arcfile2._id = req.params.id;
-            arcfile2.revision = arc_revision_id;
-            arcfile2.headlines.basic = title;
-            arcfile2.headlines.meta_title = title;
-            arcfile2.content_elements[0].content = body.und[0].value;  
-            arcfile2.description.basic = field_teaser.und[0].value;                       
-            arcfile2.first_publish_date = field_fecha_publi_text.und[0].value;            
-            arcfile2.source.source_id = field_gn4_id.und[0].value;
-            arcfile2.additional_properties.publish_date = field_fecha_publi_text.und[0].value;           
-            arcfile2.subtype = type;
+            arcfile4._id = req.params.id;
+            arcfile4.revision = arc_revision_id;
+            arcfile4.headlines.basic = title;
+            arcfile4.headlines.meta_title = title;
+            arcfile4.content_elements[0].content = body.und[0].value;  
+            arcfile4.description.basic = field_teaser.und[0].value;                       
+            arcfile4.first_publish_date = field_fecha_publi_text.und[0].value;            
+            arcfile4.source.source_id = field_gn4_id.und[0].value;
+            arcfile4.additional_properties.publish_date = field_fecha_publi_text.und[0].value;           
+            arcfile4.subtype = type;
             //tags
-            if (field_tags){            
+            if (field_tags){                
                 const gn4Tags = field_tags.und[0].value.split(",");
                 const arcTags = [];
                 for (let i = 0; i < gn4Tags.length; i++) {
@@ -158,8 +157,8 @@ router.put('/:id', ensureToken, async (req, res) => {
                     });   
                 }
 
-                arcfile2.taxonomy.tags = arcTags;
-                arcfile2.taxonomy.seo_keywords = gn4Tags;            
+                arcfile4.taxonomy.tags = arcTags;
+                arcfile4.taxonomy.seo_keywords = gn4Tags;            
             }
 
             //sections
@@ -168,11 +167,11 @@ router.put('/:id', ensureToken, async (req, res) => {
                 const sectionDrupal = drupalSectionStructure[1];
                 for (let i = 0; i < sectionsFile.sections.length; i++) {                    
                     if(sectionsFile.sections[i].gn4Section == sectionDrupal){                        
-                        arcfile2.taxonomy.sites[0].referent.id = sectionsFile.sections[i].arcSection;
-                        arcfile2.taxonomy.sections[0].referent.id = sectionsFile.sections[i].arcSection;
-                        arcfile2.taxonomy.primary_section.referent.id = sectionsFile.sections[i].arcSection;
-                        arcfile2.taxonomy.primary_site.referent.id = sectionsFile.sections[i].arcSection;
-                        arcfile2.websites = {
+                        arcfile4.taxonomy.sites[0].referent.id = sectionsFile.sections[i].arcSection;
+                        arcfile4.taxonomy.sections[0].referent.id = sectionsFile.sections[i].arcSection;
+                        arcfile4.taxonomy.primary_section.referent.id = sectionsFile.sections[i].arcSection;
+                        arcfile4.taxonomy.primary_site.referent.id = sectionsFile.sections[i].arcSection;
+                        arcfile4.websites = {
                             "el-espectador": {
                                 "website_section": {
                                     "type": "reference",
@@ -186,35 +185,38 @@ router.put('/:id', ensureToken, async (req, res) => {
                         }
                         break;                       
                     }else{
-                        arcfile2.taxonomy.sites[0].referent.id = "";
-                        arcfile2.taxonomy.sections[0].referent.id = "";
-                        arcfile2.taxonomy.primary_section.referent.id = "";
-                        arcfile2.taxonomy.primary_site.referent.id = ""; 
-                        arcfile2.websites = {}
+                        arcfile4.taxonomy.sites[0].referent.id = "";
+                        arcfile4.taxonomy.sections[0].referent.id = "";
+                        arcfile4.taxonomy.primary_section.referent.id = "";
+                        arcfile4.taxonomy.primary_site.referent.id = ""; 
+                        arcfile4.websites = {
+                            "el-espectador":{}
+                        }
                     }
                 }                
             }else{
-                arcfile2.taxonomy.sites[0].referent.id = "";
-                arcfile2.taxonomy.sections[0].referent.id = "";
-                arcfile2.taxonomy.primary_section.referent.id = "";
-                arcfile2.taxonomy.primary_site.referent.id = ""; 
-                arcfile2.websites = {}
+                arcfile4.taxonomy.sites[0].referent.id = "";
+                arcfile4.taxonomy.sections[0].referent.id = "";
+                arcfile4.taxonomy.primary_section.referent.id = "";
+                arcfile4.taxonomy.primary_site.referent.id = ""; 
+                arcfile4.websites = {
+                    "el-espectador":{}
+                }
             }
             
-            const arcRequest2 = {
+            const arcRequest4 = {
                 method: 'PUT',
                 uri: `${environment}/story/v2/story/${req.params.id}`,
                 auth: {bearer: `${bearer}`},
-                body: JSON.stringify(arcfile2)
+                body: JSON.stringify(arcfile4)
             };
             
-            const resultRequest2 = await request(arcRequest2);
-            const jsonResultRequest2 = JSON.parse(resultRequest2);                        
-            res.send(jsonResultRequest2._id);
-            arcfile2.content_elements= [{
-                "type": "text",
-                "content": ""
-            }];
+            const resultRequest4 = await request(arcRequest4);
+            const jsonResultRequest4 = JSON.parse(resultRequest4);                        
+            res.send(jsonResultRequest4._id); 
+            arcfile4.promo_items={};
+            arcfile4.taxonomy.tags = [];
+            arcfile4.taxonomy.seo_keywords = [];          
         }else{
             return res.status(404).send('This content is not a column');
         }

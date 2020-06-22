@@ -27,6 +27,7 @@
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
     "production": "node src/index.js production",
+    "test-production": "nodemon src/index.js production",
     "sandbox": "nodemon src/index.js sandbox"
   },
   "keywords": [],

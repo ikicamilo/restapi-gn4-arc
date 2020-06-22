@@ -14,21 +14,27 @@ router.post('/', ensureToken, async (req, res) => {
     const gn4file = req.body;
     const { title, body, field_gn4_id, field_fecha_publi_text, type, field_tags, field_main_image, field_imagenes_fid, field_teaser, field_section_text } = gn4file; 
         
-    if (title && body && field_fecha_publi_text && field_gn4_id && type && field_main_image){
+    if (title && body && field_fecha_publi_text && field_gn4_id && type){
+        
         if (type == 'article'){                
             /* Campos */
             arcfile.headlines.basic = title;
             arcfile.headlines.meta_title = title;    
             arcfile.content_elements[0].content = body.und[0].value;
-            arcfile.first_publish_date = field_fecha_publi_text.und[0].value;
-            arcfile.description.basic = field_teaser.und[0].value;
+            arcfile.first_publish_date = field_fecha_publi_text.und[0].value;            
             //arcfile.credits.by[0].referent.id = field_usuario_gn4_id.und[0].value;
             arcfile.source.source_id = field_gn4_id.und[0].value;
             arcfile.additional_properties.publish_date = field_fecha_publi_text.und[0].value;
             arcfile.subtype = type;
             arcfile.additional_properties.type_content = "article";
+            //teaser            
+            if(field_teaser.und[0].value != null){           
+                arcfile.description.basic = field_teaser.und[0].value;
+            }else{                
+                arcfile.description.basic = '';
+            }  
             //tags
-            if (field_tags){            
+            if (field_tags){                
                 const gn4Tags = field_tags.und[0].value.split(",");
                 const arcTags = [];
                 for (let i = 0; i < gn4Tags.length; i++) {
@@ -37,7 +43,6 @@ router.post('/', ensureToken, async (req, res) => {
                         "text": gn4Tags[i]
                     });   
                 }
-
                 arcfile.taxonomy.tags = arcTags;
                 arcfile.taxonomy.seo_keywords = gn4Tags;            
             }
@@ -106,7 +111,9 @@ router.post('/', ensureToken, async (req, res) => {
                         arcfile.taxonomy.sections[0].referent.id = "";
                         arcfile.taxonomy.primary_section.referent.id = "";
                         arcfile.taxonomy.primary_site.referent.id = ""; 
-                        arcfile.websites = {}
+                        arcfile.websites = {
+                            "el-espectador":{}
+                        }
                     }
                 }                
             }else{
@@ -114,11 +121,13 @@ router.post('/', ensureToken, async (req, res) => {
                 arcfile.taxonomy.sections[0].referent.id = "";
                 arcfile.taxonomy.primary_section.referent.id = "";
                 arcfile.taxonomy.primary_site.referent.id = ""; 
-                arcfile.websites = {}
+                arcfile.websites = {
+                    "el-espectador":{}
+                }
             }
             
             // Peticion
-            console.log(arcfile)
+            //console.log(arcfile)
             const arcRequest = {
                 method: 'POST',
                 uri: `${environment}/story/v2/story`,
@@ -129,11 +138,15 @@ router.post('/', ensureToken, async (req, res) => {
             const resultRequest = await request(arcRequest);
             const jsonResultRequest = JSON.parse(resultRequest);                        
             res.send(jsonResultRequest._id);
+            delete arcfile;
             arcfile.content_elements= [{
                 "type": "text",
                 "content": ""
-            }]; 
-                                 
+            }];                            
+            arcfile.promo_items={};
+            arcfile.taxonomy.tags = [];
+            arcfile.taxonomy.seo_keywords = [];
+                                                              
         }else{
             return res.status(404).send('This content is not an article');
         }
@@ -173,22 +186,30 @@ router.put('/:id', ensureToken, async (req, res) => {
     const gn4file = req.body;
     const { title, body, field_gn4_id, field_fecha_publi_text, type, field_tags, field_main_image, field_imagenes_fid, field_teaser, field_section_text } = gn4file; 
     
-    if (title && body && field_fecha_publi_text && field_gn4_id && type && field_main_image){
+    if (title && body && field_fecha_publi_text && field_gn4_id && type){
         if (type == 'article'){                
             /* Campos */
             arcfile2._id = req.params.id;
             arcfile2.revision = arc_revision_id;
             arcfile2.headlines.basic = title;
-            arcfile2.headlines.meta_title = title;  
-            arcfile2.description.basic = field_teaser.und[0].value;    
+            arcfile2.headlines.meta_title = title;                  
             arcfile2.content_elements[0].content = body.und[0].value;
             arcfile2.first_publish_date = field_fecha_publi_text.und[0].value;            
             arcfile2.source.source_id = field_gn4_id.und[0].value;
             arcfile2.additional_properties.publish_date = field_fecha_publi_text.und[0].value;
             arcfile2.subtype = type;
             arcfile2.additional_properties.type_content = "article";
+            //teaser
+            //teaser            
+            if(field_teaser.und[0].value != null){           
+                arcfile2.description.basic = field_teaser.und[0].value;
+            }else{                
+                arcfile2.description.basic = '';
+            }             
             //tags
-            if (field_tags){            
+            if (field_tags){   
+                arcfile2.taxonomy.tags = [];
+                arcfile2.taxonomy.seo_keywords = [];         
                 const gn4Tags = field_tags.und[0].value.split(",");
                 const arcTags = [];
                 for (let i = 0; i < gn4Tags.length; i++) {
@@ -266,7 +287,7 @@ router.put('/:id', ensureToken, async (req, res) => {
                         arcfile2.taxonomy.sections[0].referent.id = "";
                         arcfile2.taxonomy.primary_section.referent.id = "";
                         arcfile2.taxonomy.primary_site.referent.id = ""; 
-                        arcfile2.websites = {}
+                        arcfile2.websites = {"el-espectador":{}}
                     }
                 }               
             }else{
@@ -274,9 +295,10 @@ router.put('/:id', ensureToken, async (req, res) => {
                 arcfile2.taxonomy.sections[0].referent.id = "";
                 arcfile2.taxonomy.primary_section.referent.id = "";
                 arcfile2.taxonomy.primary_site.referent.id = ""; 
-                arcfile2.websites = {}
+                arcfile2.websites = {"el-espectador":{}}
             }
-          
+            
+            console.log(arcfile2)
             // Peticion
             const arcRequest2 = {
                 method: 'PUT',
@@ -287,12 +309,14 @@ router.put('/:id', ensureToken, async (req, res) => {
             
             const resultRequest2 = await request(arcRequest2);
             const jsonResultRequest2 = JSON.parse(resultRequest2);                        
-            res.send(jsonResultRequest2._id);
+            res.send(jsonResultRequest2._id);          
             arcfile2.content_elements= [{
                 "type": "text",
                 "content": ""
-            }];                    
-                  
+            }];                            
+            arcfile2.promo_items={};            
+            arcfile2.taxonomy.tags = [];
+            arcfile2.taxonomy.seo_keywords = [];             
         }else{
             return res.status(404).send('This content is not an article');
         }

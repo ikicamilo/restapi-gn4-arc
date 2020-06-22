@@ -1,0 +1,68 @@
+{
+    "type": "story",
+    "version": "0.10.4",
+    "headlines": {
+        "basic": ""
+    },
+    "content_elements": [
+        {
+            "type": "text",
+            "content": ""
+        }
+    ],
+    "subtype": "",
+    "description": {
+        "basic": "",
+        "meta_title": ""
+    },
+    "taxonomy": {
+        "seo_keywords": [],
+        "tags": [],
+        "sites": [
+            {
+                "type": "reference",
+                "referent": {
+                    "id": "",
+                    "provider": "",
+                    "type": "site"
+                }
+            }
+        ],
+        "sections": [
+            {
+                "type": "reference",
+                "referent": {
+                    "id": "",
+                    "provider": "",
+                    "type": "section",
+                    "website": "el-espectador"
+                }
+            }
+        ],
+        "primary_section": {
+            "type": "reference",
+            "referent": {
+                "id": "",
+                "website": "el-espectador",
+                "type": "section"
+            }
+        },
+        "primary_site": {
+            "type": "reference",
+            "referent": {
+                "id": "",
+                "provider": "",
+                "type": "site"
+            }
+        }
+    },
+    "first_publish_date": "",
+    "source": {
+        "system": "GN4",
+        "source_id": ""
+    },
+    "additional_properties": {
+        "publish_date": "",
+        "type_content": ""
+    }
+}
