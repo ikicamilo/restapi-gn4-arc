@@ -17,10 +17,6 @@ app.use(express.urlencoded({extended:false}));
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true}));
 
-//force https
-//const forceHttps = require('@crystallize/elasticloadbalancer-express-force-https');
-//app.use(forceHttps());
-
 //routes
 app.use('/api/auth',require('./controllers/authController'));
 app.use('/api/gn4-to-arc/cartoon', require('./routes/cartoon_generator'));

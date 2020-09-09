@@ -126,8 +126,7 @@ router.post('/', ensureToken, async (req, res) => {
                 }
             }
             
-            // Peticion
-            //console.log(arcfile)
+            // Peticion           
             const arcRequest = {
                 method: 'POST',
                 uri: `${environment}/story/v2/story`,
@@ -297,8 +296,7 @@ router.put('/:id', ensureToken, async (req, res) => {
                 arcfile2.taxonomy.primary_site.referent.id = ""; 
                 arcfile2.websites = {"el-espectador":{}}
             }
-            
-            console.log(arcfile2)
+                        
             // Peticion
             const arcRequest2 = {
                 method: 'PUT',

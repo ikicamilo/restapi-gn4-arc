@@ -17,6 +17,7 @@
     "node-fetch": "^2.6.0",
     "request": "^2.88.2",
     "request-promise": "^4.2.5",
+    "simple-exiftool": "^1.1.0",
     "underscore": "^1.9.2",
     "yargs": "^15.3.1"
   },

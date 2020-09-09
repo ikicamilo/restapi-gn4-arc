@@ -7,6 +7,7 @@ const multiparty = require('multiparty');
 const verifyToken = require('../controllers/verifyToken');
 const ensureToken = require('../controllers/ensureToken');
 const path = require('path');
+//const Exif = require("simple-exiftool");
 
 router.post('/', ensureToken, (req, res) => { 
     const environment = req.app.get('environment');
@@ -14,8 +15,17 @@ router.post('/', ensureToken, (req, res) => {
     const avaibleExtensions = ['.jpeg', '.jpg', '.png','.tif','.eps'];
     const form = new multiparty.Form();
     form.parse(req, async function(err, fields, files) {
-                
-        if (files.image && files.image[0].originalFilename !== '' && typeof files.image !== 'undefined'){
+        
+ 
+        // Exif(files.image[0].path, (error, metadata) => {
+            
+        //     if (error) {
+        //         // handle error
+        //     }
+        //     console.log('Hola', metadata);
+        // });
+        // console.log('Files', files);
+        if (files.image && files.image[0].originalFilename !== '' && typeof files.image !== 'undefined'){            
             if (avaibleExtensions.includes(path.extname(files.image[0].originalFilename))){
                 const arcRequest = {
                     method: 'POST',
