@@ -18,7 +18,7 @@
     "request": "^2.88.2",
     "request-promise": "^4.2.5",
     "simple-exiftool": "^1.1.0",
-    "underscore": "^1.9.2",
+    "underscore": "^1.12.1",
     "yargs": "^15.3.1"
   },
   "devDependencies": {
